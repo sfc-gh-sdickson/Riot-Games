@@ -43,6 +43,7 @@ def predict_revenue(session, months_ahead: int):
         COUNT(DISTINCT CASE WHEN item_type = 'SKIN' THEN transaction_id END)::FLOAT AS skin_purchase_count
     FROM RAW.PURCHASES
     WHERE amount_usd > 0
+    GROUP BY 1
     ORDER BY purchase_month DESC
     LIMIT 1
     """
@@ -169,7 +170,7 @@ def predict_toxicity(session, player_segment):
         p.honor_level::FLOAT AS honor_level,
         COUNT(DISTINCT m.match_id)::FLOAT AS total_matches,
         COUNT_IF(m.afk_flag)::FLOAT AS afk_count,
-        AVG(m.deaths)::FLOAT AS avg_deaths,
+        AVG(m.deaths)::INT AS avg_deaths,
         COUNT(DISTINCT ir.incident_report_id)::FLOAT AS past_incidents,
         DATEDIFF('day', p.account_created_date, CURRENT_DATE())::FLOAT AS account_age_days,
         (COUNT(DISTINCT ir.incident_report_id) > 0)::BOOLEAN AS has_incident
