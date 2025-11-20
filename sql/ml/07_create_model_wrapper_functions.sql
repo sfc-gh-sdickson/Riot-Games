@@ -179,6 +179,7 @@ def predict_toxicity(session, player_segment):
     LEFT JOIN RAW.INCIDENT_REPORTS ir ON p.player_id = ir.player_id
     WHERE 1=1 {segment_clause}
     GROUP BY 1,2,3,4,9
+    HAVING COUNT(DISTINCT m.match_id) > 0
     LIMIT 500
     """
 
