@@ -127,6 +127,7 @@ def predict_churn(session, player_segment):
     """
 
     input_df = session.sql(query).drop("PLAYER_ID")
+    input_df = input_df.fillna(0)
 
     preds = model.run(input_df, function_name="predict")
     pdf = preds.to_pandas()
